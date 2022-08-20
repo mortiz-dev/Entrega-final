@@ -67,5 +67,31 @@ namespace Pre_Entrega_1.Handler
                 sqlConnection.Close();
             }
         }
+        public static void CrearProducto(Producto producto)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                string queryInsert = "INSERT INTO Producto(Descripciones, Costo, PrecioVenta, Stock, IdUsuario) " + 
+                    "VALUES(@descripciones, @costo, @precioVenta, @stock, @idUsuario)";
+                SqlParameter descrParameter = new SqlParameter("descripciones", SqlDbType.VarChar) { Value = producto.Descripciones };
+                SqlParameter costoParameter = new SqlParameter("costo", SqlDbType.Decimal) { Value = producto.Costo };
+                SqlParameter precioVentaParameter = new SqlParameter("precioVenta", SqlDbType.Decimal) { Value = producto.PrecioVenta };
+                SqlParameter stockParameter = new SqlParameter("stock", SqlDbType.Int) { Value = producto.Stock };
+                SqlParameter idUsuarioParamater = new SqlParameter("idUsuario", SqlDbType.Int) { Value = producto.IdUsuario };
+
+                sqlConnection.Open();
+
+                using(SqlCommand sqlCommand = new SqlCommand(queryInsert, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(descrParameter);
+                    sqlCommand.Parameters.Add(costoParameter);
+                    sqlCommand.Parameters.Add(precioVentaParameter);
+                    sqlCommand.Parameters.Add(stockParameter);
+                    sqlCommand.Parameters.Add(idUsuarioParamater);
+
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
