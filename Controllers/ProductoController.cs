@@ -33,5 +33,10 @@ namespace Entrega_final.Controllers
                 Console.WriteLine(ex.Message);
             }
         }
+        [HttpDelete]
+        public void DeleteProducto([FromBody] int id)
+        {
+            ProductoHandler.DeleteProducto(id);
+        }
     }
 }

@@ -93,5 +93,24 @@ namespace Pre_Entrega_1.Handler
                 }
             }
         }
+        public static void EliminarProducto(int id)
+        {
+            using(SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                string queryDelete = "DELETE FROM Producto WHERE Id = @id";
+                SqlParameter idParamater = new SqlParameter("id", SqlDbType.Int) { Value = id };
+                sqlConnection.Open();
+
+                using(SqlCommand sqlCommand = new SqlCommand(queryDelete, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(idParamater);
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+        }
+        public static void ModificarProducto(Producto producto)
+        {
+
+        }
     }
 }
