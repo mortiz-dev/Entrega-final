@@ -38,5 +38,24 @@ namespace Entrega_final.Controllers
         {
             ProductoHandler.DeleteProducto(id);
         }
+        [HttpPut]
+        public void UpdateProduto([FromBody] Producto producto)
+        {
+            try
+            {
+                ProductoHandler.ModificarProducto(new Producto
+                {
+                    Id = producto.Id,
+                    Descripciones=producto.Descripciones,
+                    Costo=producto.Costo,
+                    PrecioVenta=producto.PrecioVenta,
+                    Stock=producto.Stock,
+                });
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

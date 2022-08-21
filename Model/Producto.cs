@@ -13,7 +13,6 @@ namespace Pre_Entrega_1.Model
         public double Costo { get; set; }
         public double PrecioVenta { get; set; }
         public int Stock { get; set; }
-
         public int IdUsuario { get; set; }
     }
 }

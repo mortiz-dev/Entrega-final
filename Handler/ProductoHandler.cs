@@ -91,6 +91,7 @@ namespace Pre_Entrega_1.Handler
 
                     sqlCommand.ExecuteNonQuery();
                 }
+                sqlConnection.Close();
             }
         }
         public static void EliminarProducto(int id)
@@ -110,7 +111,30 @@ namespace Pre_Entrega_1.Handler
         }
         public static void ModificarProducto(Producto producto)
         {
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                string queryInsert = "UPDATE Producto SET Descripciones = @descripciones, Costo = @costo, PrecioVenta = @precioVenta, Stock = @stock WHERE Id = @id";
+                SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = producto.Id };
+                SqlParameter descrParameter = new SqlParameter("descripciones", SqlDbType.VarChar) { Value = producto.Descripciones };
+                SqlParameter costoParameter = new SqlParameter("costo", SqlDbType.Decimal) { Value = producto.Costo };
+                SqlParameter precioVentaParameter = new SqlParameter("precioVenta", SqlDbType.Decimal) { Value = producto.PrecioVenta };
+                SqlParameter stockParameter = new SqlParameter("stock", SqlDbType.Int) { Value = producto.Stock };
 
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(queryInsert, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(idParameter);
+                    sqlCommand.Parameters.Add(descrParameter);
+                    sqlCommand.Parameters.Add(costoParameter);
+                    sqlCommand.Parameters.Add(precioVentaParameter);
+                    sqlCommand.Parameters.Add(stockParameter);
+
+                    sqlCommand.ExecuteNonQuery();
+                }
+
+                sqlConnection.Close();
+            }
         }
     }
 }
