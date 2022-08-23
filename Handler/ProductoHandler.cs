@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-using Pre_Entrega_1.Model;
+using Entrega_final.Model;
 using System.Data.SqlClient;
 
 namespace Pre_Entrega_1.Handler
 {
     public static class ProductoHandler
     {
-        public const string ConnectionString = "Server=tcp:negociosbna.database.windows.net,1433;Initial Catalog=negocios-bna-app;Persist Security Info=False;User ID=n75052;Password=Bl@ckLotus1994;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public const string ConnectionString = "";
         public static List<Producto> GetProductos()
         {
             List<Producto> productos = new List<Producto>();

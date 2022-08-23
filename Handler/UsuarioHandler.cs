@@ -1,85 +1,147 @@
-﻿using Pre_Entrega_1.Model;
-using System;
-using System.Collections.Generic;
+﻿using Entrega_final.Model;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Pre_Entrega_1.Handler
+namespace MiPrimeraApi2.Repository
 {
     public static class UsuarioHandler
     {
-        public const string ConnectionString = "Server=tcp:negociosbna.database.windows.net,1433;Initial Catalog=negocios-bna-app;Persist Security Info=False;User ID=n75052;Password=Bl@ckLotus1994;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        public static Usuario GetUsuarioByUser(String user)
-        {
-            List<Usuario> lUsuario = new List<Usuario>();
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
-            {
-                using(SqlCommand sqlCommand = new SqlCommand())
-                {
-                    sqlCommand.Connection = sqlConnection;
-                    sqlCommand.Connection.Open();
-                    sqlCommand.CommandText = "SELECT * FROM Usuario WHERE NombreUsuario = @user";
-
-                    sqlCommand.Parameters.AddWithValue("@user", user);
-
-                    SqlDataAdapter dataAdaptar = new SqlDataAdapter();
-                    dataAdaptar.SelectCommand = sqlCommand;
-                    DataTable table = new DataTable();
-                    dataAdaptar.Fill(table);
-                    sqlCommand.Connection.Close();
-
-                    foreach(DataRow row in table.Rows)
-                    {
-                        Usuario usuario = new Usuario();
-                        usuario.Id = Convert.ToInt32(row["Id"]);
-                        usuario.Nombre = row["Nombre"]?.ToString();
-                        usuario.Apellido = row["Apellido"]?.ToString();
-                        usuario.NombreUsuario = row["NombreUsuario"]?.ToString();
-                        usuario.Password = row["Contraseña"]?.ToString();
-                        usuario.Email = row["Mail"]?.ToString();
-
-                        lUsuario.Add(usuario);
-                    }
-                }
-            }
-            return lUsuario?.FirstOrDefault();
-        }
-
+        public const string ConnectionString = "";
         public static List<Usuario> GetUsuarios()
         {
-            List<Usuario> usuarios = new List<Usuario>();
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            List<Usuario> resultados = new List<Usuario>();
+
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Usuario", conn))
+                using (SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Usuario", sqlConnection))
                 {
-                    conn.Open();
+                    sqlConnection.Open();
 
                     using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
                     {
-                        if (dataReader.HasRows)
+                        // Me aseguro que haya filas
+                        if(dataReader.HasRows)
                         {
-                            while (dataReader.Read())
+                            while(dataReader.Read())
                             {
-                                Usuario user = new Usuario();
+                                Usuario usuario = new Usuario();
 
-                                user.Id = Convert.ToInt32(dataReader["Id"]);
-                                user.Nombre = dataReader["Nombre"].ToString();
-                                user.Apellido = dataReader["Apellido"].ToString();
-                                user.NombreUsuario = dataReader["NombreUsuario"].ToString();
-                                user.Password = dataReader["Contraseña"].ToString();
-                                user.Email = dataReader["Mail"].ToString();
+                                usuario.Id = Convert.ToInt32(dataReader["Id"]);
+                                usuario.NombreUsuario = dataReader["NombreUsuario"].ToString();
+                                usuario.Nombre = dataReader["Nombre"].ToString();
+                                usuario.Apellido = dataReader["Apellido"].ToString();
+                                usuario.Password = dataReader["Contraseña"].ToString();
+                                usuario.Email = dataReader["Mail"].ToString();
 
-                                usuarios.Add(user);
+                                resultados.Add(usuario);
                             }
                         }
                     }
+
+                    sqlConnection.Close();
                 }
-                conn.Close();
             }
-            return usuarios;
+
+            return resultados;
+        }
+        
+        public static bool EliminarUsuario(int id)
+        {
+            bool resultado = false;
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                string queryDelete = "DELETE FROM Usuario WHERE Id = @id";
+
+                SqlParameter sqlParameter = new SqlParameter("id", System.Data.SqlDbType.BigInt);
+                sqlParameter.Value = id;
+
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(queryDelete, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(sqlParameter);
+                    int numberOfRows = sqlCommand.ExecuteNonQuery();
+                    if(numberOfRows > 0)
+                    {
+                        resultado = true;
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return resultado;
+        }
+        public static bool CrearUsuario(Usuario usuario)
+        {
+            bool resultado = false;
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                string queryInsert = "INSERT INTO [SistemaGestion].[dbo].[Usuario] " +
+                    "(Nombre, Apellido, NombreUsuario, Contraseña, Mail) VALUES " +
+                    "(@nombreParameter, @apellidoParameter, @nombreUsuarioParameter, @contraseñaParameter, @mailParameter);";
+
+                SqlParameter nombreParameter = new SqlParameter("nombreParameter", SqlDbType.VarChar) { Value = usuario.Nombre };
+                SqlParameter apellidoParameter = new SqlParameter("apellidoParameter", SqlDbType.VarChar) { Value = usuario.Apellido };
+                SqlParameter nombreUsuarioParameter = new SqlParameter("nombreUsuarioParameter", SqlDbType.VarChar) { Value = usuario.NombreUsuario };
+                SqlParameter contraseñaParameter = new SqlParameter("contraseñaParameter", SqlDbType.VarChar) { Value = usuario.Password };
+                SqlParameter mailParameter = new SqlParameter("mailParameter", SqlDbType.VarChar) { Value = usuario.Email };
+
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(queryInsert, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(nombreParameter);
+                    sqlCommand.Parameters.Add(apellidoParameter);
+                    sqlCommand.Parameters.Add(nombreUsuarioParameter);
+                    sqlCommand.Parameters.Add(contraseñaParameter);
+                    sqlCommand.Parameters.Add(mailParameter);
+
+                    int numberOfRows = sqlCommand.ExecuteNonQuery(); // Se ejecuta la sentencia sql
+
+                    if (numberOfRows > 0)
+                    {
+                        resultado = true;
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return resultado;
+        }
+        
+        public static bool ModificarNombreDeUsuario(Usuario usuario)
+        {
+            bool resultado = false;
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                string queryInsert = "UPDATE [SistemaGestion].[dbo].[Usuario] " +
+                    "SET Nombre = @nombre" +
+                    "WHERE Id = @id ";
+
+                SqlParameter nombreParameter = new SqlParameter("nombre", SqlDbType.VarChar) { Value = usuario.Nombre };
+                SqlParameter idParameter = new SqlParameter("id", SqlDbType.BigInt) { Value = usuario.Id };
+
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(queryInsert, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(nombreParameter);
+                    sqlCommand.Parameters.Add(idParameter);
+
+                    int numberOfRows = sqlCommand.ExecuteNonQuery(); // Se ejecuta la sentencia sql
+
+                    if (numberOfRows > 0)
+                    {
+                        resultado = true;
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return resultado;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Pre_Entrega_1.Model;
+﻿using Entrega_final.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

@@ -1,7 +1,7 @@
 ﻿using Entrega_final.Handler.DOTS;
 using Microsoft.AspNetCore.Mvc;
 using Pre_Entrega_1.Handler;
-using Pre_Entrega_1.Model;
+using Entrega_final.Model;
 
 namespace Entrega_final.Controllers
 {

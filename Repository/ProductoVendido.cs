@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pre_Entrega_1.Model
+namespace Entrega_final.Model
 {
     public class ProductoVendido
     {
