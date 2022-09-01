@@ -16,16 +16,15 @@ namespace MiPrimeraApi2.Controllers
         }
 
         [HttpDelete]
-        public bool EliminarUsuario([FromBody] int id)
+        public void EliminarUsuario([FromBody] int id)
         {
             try
             {
-                return UsuarioHandler.EliminarUsuario(id);
+                UsuarioHandler.EliminarUsuario(id);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
             }
         }
 
@@ -40,11 +39,11 @@ namespace MiPrimeraApi2.Controllers
         }
 
         [HttpPost]
-        public bool CrearUsuario([FromBody] PostUsuario usuario)
+        public void CrearUsuario([FromBody] PostUsuario usuario)
         {
             try
             {
-                return UsuarioHandler.CrearUsuario(new Usuario
+                UsuarioHandler.CrearUsuario(new Usuario
                 {
                     Apellido = usuario.Apellido,
                     Password = usuario.Contraseña,
@@ -56,7 +55,6 @@ namespace MiPrimeraApi2.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
             }
         }
     }
