@@ -6,7 +6,7 @@ namespace MiPrimeraApi2.Repository
 {
     public static class UsuarioHandler
     {
-        public const string ConnectionString = "";
+        public const string ConnectionString = "Server=tcp:negociosbna.database.windows.net,1433;Initial Catalog=negocios-bna-app;Persist Security Info=False;User ID=n75052;Password=Bl@ckLotus1994;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         public static List<Usuario> GetUsuarios()
         {
             List<Usuario> resultados = new List<Usuario>();
@@ -25,14 +25,19 @@ namespace MiPrimeraApi2.Repository
                             while (dataReader.Read())
                             {
                                 Usuario usuario = new Usuario();
-
+                                usuario.Nombre = dataReader["Nombre"].ToString();
+                                usuario.Apellido = dataReader["Apellido"].ToString();
+                                usuario.NombreUsuario = dataReader["NombreUsuario"].ToString();
+                                usuario.Password = dataReader["Contraseña"].ToString();
+                                usuario.Email = dataReader["Mail"].ToString();
                                 resultados.Add(usuario);
                             }
                         }
                     }
-                    return resultados;
+                    sqlConnection.Close();
                 }
             }
+            return resultados;
         }
         public static bool ModificarNombreDeUsuario(Usuario usuario)
         {
