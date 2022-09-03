@@ -60,7 +60,7 @@ namespace MiPrimeraApi2.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public GetUserName GetUsuarios()
+        public GetUserName GetUsuariosById(int id)
         {
             return UsuarioHandler.GetNombreUsuario(id);
         }

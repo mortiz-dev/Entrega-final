@@ -151,9 +151,9 @@ namespace MiPrimeraApi2.Repository
         public static GetUserName GetNombreUsuario(int id)
         {
             GetUserName userName = new GetUserName();
-            using (SqlConnection sqlConnection = new SqlConnection())
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
-                string query = "SELECT Nombre FROM Usuarios WHERE Id = @id";
+                string query = "SELECT Nombre FROM Usuario WHERE Id = @id";
                 SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = id };
 
                 sqlConnection.Open();
@@ -165,8 +165,10 @@ namespace MiPrimeraApi2.Repository
                     {
                         if (dataReader.HasRows)
                         {
-                            
-                            userName.Nombre = dataReader["Nombre"].ToString();
+                            while (dataReader.Read())
+                            {
+                                userName.Nombre = dataReader["Nombre"].ToString();
+                            }
                         }
                     }
                 }
