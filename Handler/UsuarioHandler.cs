@@ -8,16 +8,18 @@ namespace MiPrimeraApi2.Repository
     public static class UsuarioHandler
     {
         public const string ConnectionString = "Server=tcp:negociosbna.database.windows.net,1433;Initial Catalog=negocios-bna-app;Persist Security Info=False;User ID=n75052;Password=Bl@ckLotus1994;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        public static List<Usuario> GetUsuarios()
+        public static List<Usuario> GetUsuarios(int id)
         {
             List<Usuario> resultados = new List<Usuario>();
 
             using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Usuario", sqlConnection))
+                string query = "SELECT * FROM Usuario WHERE Id = @id";
+                SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = id};
+                sqlConnection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                 {
-                    sqlConnection.Open();
-
+                    sqlCommand.Parameters.Add(idParameter);
                     using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
                     {
                         // Me aseguro que haya filas

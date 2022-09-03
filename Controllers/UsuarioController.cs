@@ -10,12 +10,6 @@ namespace MiPrimeraApi2.Controllers
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
     {
-        [HttpGet(Name = "ObtenerUsuarios")]
-        public List<Usuario> GetUsuarios()
-        {
-            return UsuarioHandler.GetUsuarios();
-        }
-
         [HttpDelete]
         public void EliminarUsuario([FromBody] int id)
         {
