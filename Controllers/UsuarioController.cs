@@ -2,6 +2,7 @@
 using Entrega_final.Controllers.DTOS;
 using MiPrimeraApi2.Repository;
 using Entrega_final.Model;
+using Entrega_final.Controllers.DOTS;
 
 namespace MiPrimeraApi2.Controllers
 {
@@ -9,7 +10,7 @@ namespace MiPrimeraApi2.Controllers
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
     {
-        [HttpGet(Name = "ConseguirUsuarios")]
+        [HttpGet(Name = "ObtenerUsuarios")]
         public List<Usuario> GetUsuarios()
         {
             return UsuarioHandler.GetUsuarios();
@@ -56,6 +57,12 @@ namespace MiPrimeraApi2.Controllers
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        [HttpGet("{id:int}")]
+        public GetUserName GetUsuarios()
+        {
+            return UsuarioHandler.GetNombreUsuario(id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Entrega_final.Model;
+﻿using Entrega_final.Controllers.DOTS;
+using Entrega_final.Model;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -25,6 +26,7 @@ namespace MiPrimeraApi2.Repository
                             while (dataReader.Read())
                             {
                                 Usuario usuario = new Usuario();
+                                usuario.Id = Convert.ToInt32(dataReader["Id"]);
                                 usuario.Nombre = dataReader["Nombre"].ToString();
                                 usuario.Apellido = dataReader["Apellido"].ToString();
                                 usuario.NombreUsuario = dataReader["NombreUsuario"].ToString();
@@ -145,6 +147,32 @@ namespace MiPrimeraApi2.Repository
 
                 sqlConnection.Close();
             }
+        }
+        public static GetUserName GetNombreUsuario(int id)
+        {
+            GetUserName userName = new GetUserName();
+            using (SqlConnection sqlConnection = new SqlConnection())
+            {
+                string query = "SELECT Nombre FROM Usuarios WHERE Id = @id";
+                SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = id };
+
+                sqlConnection.Open();
+                using(SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(idParameter);
+
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (dataReader.HasRows)
+                        {
+                            
+                            userName.Nombre = dataReader["Nombre"].ToString();
+                        }
+                    }
+                }
+                sqlConnection.Close();
+            }
+            return userName;
         }
     }
 }
