@@ -8,10 +8,16 @@ namespace Entrega_final.Controllers
     [Route("[controller]")]
     public class VentasController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("ObtenerProductosVendidos")]
         public List<GetProductosVendidos> GetProductoVendido()
         {
             return VentasHandler.GetProductosVentas();
+        }
+
+        [HttpGet("ObtenerListaVentas")]
+        public List<GetVentas> GetListaVentas()
+        {
+            return VentasHandler.GetListVentas();
         }
     }
 }

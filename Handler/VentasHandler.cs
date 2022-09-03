@@ -12,12 +12,16 @@ namespace Pre_Entrega_1.Handler
     public static class VentasHandler
     {
         public const string ConnectionString = "Server=tcp:negociosbna.database.windows.net,1433;Initial Catalog=negocios-bna-app;Persist Security Info=False;User ID=n75052;Password=Bl@ckLotus1994;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        public static List<Ventas> GetVentas()
+        public static List<GetVentas> GetListVentas()
         {
-            List<Ventas> ventas = new List<Ventas>();
+            List<GetVentas> ventas = new List<GetVentas>();
+            string query = "SELECT V.Id, V.Comentarios, P.Stock, O.Descripciones, O.PrecioVenta * P.Stock AS [Total de la venta] "+
+                            "FROM Venta AS V "+
+                            "INNER JOIN ProductoVendido AS P ON P.IdVenta = V.Id "+
+                            "INNER JOIN Producto AS O ON P.IdProducto = O.Id";
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Venta", conn))
+                using (SqlCommand sqlCommand = new SqlCommand(query, conn))
                 {
                     conn.Open();
 
@@ -27,10 +31,12 @@ namespace Pre_Entrega_1.Handler
                         {
                             while (dataReader.Read())
                             {
-                                Ventas venta = new Ventas();
-
+                                GetVentas venta = new GetVentas();
                                 venta.Id = Convert.ToInt32(dataReader["Id"]);
                                 venta.Comentarios = dataReader["Comentarios"].ToString();
+                                venta.Stock = Convert.ToInt32(dataReader["Stock"]);
+                                venta.Descripcion = dataReader["Descripciones"].ToString();
+                                venta.TotalVenta = Convert.ToDecimal(dataReader["Total de la venta"]);
 
                                 ventas.Add(venta);
                             }
