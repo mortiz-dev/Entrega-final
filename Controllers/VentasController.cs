@@ -19,5 +19,11 @@ namespace Entrega_final.Controllers
         {
             return VentasHandler.GetListVentas();
         }
+
+        [HttpDelete]
+        public void EliminarVenta([FromBody] int id)
+        {
+            VentasHandler.DeleteVenta(id);
+        }
     }
 }

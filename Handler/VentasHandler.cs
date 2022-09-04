@@ -79,6 +79,36 @@ namespace Pre_Entrega_1.Handler
             }
             return resultados;
         }
+        public static void DeleteVenta(int id)
+        {
+            string queryDeleteVenta = "DELETE FROM Venta WHERE Id = @id";
+            string queryDeletePV = "DELETE FROM ProductoVendido WHERE IdVenta = @id";
+
+            using(SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            {
+                SqlParameter idParameter = new SqlParameter("id", System.Data.SqlDbType.Int) {Value = id};
+
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand1 = new SqlCommand(queryDeletePV, sqlConnection))
+                {
+                    sqlCommand1.Parameters.Add(idParameter);
+
+                    sqlCommand1.ExecuteNonQuery();
+
+                    sqlCommand1.Parameters.Clear();
+                }
+
+                using (SqlCommand sqlCommand = new SqlCommand(queryDeleteVenta, sqlConnection))
+                {
+                    sqlCommand.Parameters.Add(idParameter);
+
+                    sqlCommand.ExecuteNonQuery();
+                }
+
+                sqlConnection.Close();
+            }
+        }
     }
     
 }
