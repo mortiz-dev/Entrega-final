@@ -1,6 +1,6 @@
 ﻿namespace Entrega_final.Controllers.DTOS
 {
-    public class PutUsuario
+    public class PutUsuarioEdit
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

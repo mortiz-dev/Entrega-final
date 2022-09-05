@@ -3,6 +3,7 @@ using Entrega_final.Controllers.DTOS;
 using MiPrimeraApi2.Repository;
 using Entrega_final.Model;
 using Entrega_final.Controllers.DOTS;
+using Entrega_final.Handler.DOTS;
 
 namespace MiPrimeraApi2.Controllers
 {
@@ -24,7 +25,7 @@ namespace MiPrimeraApi2.Controllers
         }
 
         [HttpPut]
-        public bool ModificarUsuario([FromBody] PutUsuario usuario)
+        public bool ModificarUsuario([FromBody] PutUsuarioEdit usuario)
         {
             return UsuarioHandler.ModificarNombreDeUsuario(new Usuario
             {
@@ -57,6 +58,14 @@ namespace MiPrimeraApi2.Controllers
         public GetUserName GetUsuariosById(int id)
         {
             return UsuarioHandler.GetNombreUsuario(id);
+        }
+        [HttpPost("IniciarSesion")]
+        public bool IniciarSesion([FromBody] UserLogin login)
+        {
+            return UsuarioHandler.UserLogin(new UserLogin { 
+                UserName = login.UserName,
+                Password = login.Password 
+            });
         }
     }
 }
