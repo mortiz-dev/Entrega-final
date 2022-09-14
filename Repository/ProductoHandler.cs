@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using Entrega_final.Model;
 using System.Data.SqlClient;
 
-namespace Pre_Entrega_1.Handler
+namespace Entrega_final.Repository
 {
     public static class ProductoHandler
     {
@@ -54,12 +49,12 @@ namespace Pre_Entrega_1.Handler
             {
                 string queryDelete = "DELETE FROM Producto WHERE Id = @id";
 
-                SqlParameter sqlParameter = new SqlParameter("id", System.Data.SqlDbType.BigInt);
+                SqlParameter sqlParameter = new SqlParameter("id", SqlDbType.BigInt);
                 sqlParameter.Value = id;
 
                 sqlConnection.Open();
 
-                using(SqlCommand sqlCommand = new SqlCommand(queryDelete, sqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(queryDelete, sqlConnection))
                 {
                     sqlCommand.Parameters.Add(sqlParameter);
                     sqlCommand.ExecuteNonQuery();
@@ -71,7 +66,7 @@ namespace Pre_Entrega_1.Handler
         {
             using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
-                string queryInsert = "INSERT INTO Producto(Descripciones, Costo, PrecioVenta, Stock, IdUsuario) " + 
+                string queryInsert = "INSERT INTO Producto(Descripciones, Costo, PrecioVenta, Stock, IdUsuario) " +
                     "VALUES(@descripciones, @costo, @precioVenta, @stock, @idUsuario)";
                 SqlParameter descrParameter = new SqlParameter("descripciones", SqlDbType.VarChar) { Value = producto.Descripciones };
                 SqlParameter costoParameter = new SqlParameter("costo", SqlDbType.Decimal) { Value = producto.Costo };
@@ -81,7 +76,7 @@ namespace Pre_Entrega_1.Handler
 
                 sqlConnection.Open();
 
-                using(SqlCommand sqlCommand = new SqlCommand(queryInsert, sqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(queryInsert, sqlConnection))
                 {
                     sqlCommand.Parameters.Add(descrParameter);
                     sqlCommand.Parameters.Add(costoParameter);
@@ -96,13 +91,13 @@ namespace Pre_Entrega_1.Handler
         }
         public static void EliminarProducto(int id)
         {
-            using(SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
                 string queryDelete = "DELETE FROM Producto WHERE Id = @id";
                 SqlParameter idParamater = new SqlParameter("id", SqlDbType.Int) { Value = id };
                 sqlConnection.Open();
 
-                using(SqlCommand sqlCommand = new SqlCommand(queryDelete, sqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(queryDelete, sqlConnection))
                 {
                     sqlCommand.Parameters.Add(idParamater);
                     sqlCommand.ExecuteNonQuery();

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Entrega_final.Controllers.DTOS;
-using MiPrimeraApi2.Repository;
 using Entrega_final.Model;
 using Entrega_final.Controllers.DOTS;
-using Entrega_final.Handler.DOTS;
+using Entrega_final.Repository;
 
 namespace MiPrimeraApi2.Controllers
 {

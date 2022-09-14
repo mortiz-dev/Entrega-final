@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pre_Entrega_1.Handler
+namespace Entrega_final.Repository
 {
     public abstract class DbHandler
     {

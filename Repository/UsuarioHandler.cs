@@ -1,10 +1,9 @@
 ﻿using Entrega_final.Controllers.DOTS;
-using Entrega_final.Handler.DOTS;
 using Entrega_final.Model;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace MiPrimeraApi2.Repository
+namespace Entrega_final.Repository
 {
     public static class UsuarioHandler
     {
@@ -16,7 +15,7 @@ namespace MiPrimeraApi2.Repository
             using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
                 string query = "SELECT * FROM Usuario WHERE Id = @id";
-                SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = id};
+                SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = id };
                 sqlConnection.Open();
                 using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                 {
@@ -109,7 +108,7 @@ namespace MiPrimeraApi2.Repository
             {
                 string queryDelete = "DELETE FROM Usuario WHERE Id = @id";
 
-                SqlParameter sqlParameter = new SqlParameter("id", System.Data.SqlDbType.BigInt);
+                SqlParameter sqlParameter = new SqlParameter("id", SqlDbType.BigInt);
                 sqlParameter.Value = id;
 
                 sqlConnection.Open();
@@ -160,7 +159,7 @@ namespace MiPrimeraApi2.Repository
                 SqlParameter idParameter = new SqlParameter("id", SqlDbType.Int) { Value = id };
 
                 sqlConnection.Open();
-                using(SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                 {
                     sqlCommand.Parameters.Add(idParameter);
 
@@ -184,19 +183,19 @@ namespace MiPrimeraApi2.Repository
             bool login = false;
             string queryUser = "SELECT * FROM Usuario WHERE NombreUsuario = @usuario AND Contraseña = @password";
 
-            using(SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
-                SqlParameter idParamater = new SqlParameter("usuario", System.Data.SqlDbType.VarChar) { Value = userLogin.UserName };
+                SqlParameter idParamater = new SqlParameter("usuario", SqlDbType.VarChar) { Value = userLogin.UserName };
                 SqlParameter passwordParameter = new SqlParameter("password", SqlDbType.VarChar) { Value = userLogin.Password };
 
                 sqlConnection.Open();
 
-                using(SqlCommand sqlCommand = new SqlCommand(queryUser, sqlConnection))
+                using (SqlCommand sqlCommand = new SqlCommand(queryUser, sqlConnection))
                 {
                     sqlCommand.Parameters.Add(idParamater);
                     sqlCommand.Parameters.Add(passwordParameter);
 
-                    using(SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
                     {
                         if (dataReader.HasRows)
                         {

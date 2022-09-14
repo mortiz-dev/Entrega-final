@@ -1,4 +1,4 @@
-﻿using Entrega_final.Handler.DOTS;
+﻿using Entrega_final.Controllers.DOTS;
 using Entrega_final.Model;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pre_Entrega_1.Handler
+namespace Entrega_final.Repository
 {
     public static class VentasHandler
     {
@@ -15,9 +15,9 @@ namespace Pre_Entrega_1.Handler
         public static List<GetVentas> GetListVentas()
         {
             List<GetVentas> ventas = new List<GetVentas>();
-            string query = "SELECT V.Id, V.Comentarios, P.Stock, O.Descripciones, O.PrecioVenta * P.Stock AS [Total de la venta] "+
-                            "FROM Venta AS V "+
-                            "INNER JOIN ProductoVendido AS P ON P.IdVenta = V.Id "+
+            string query = "SELECT V.Id, V.Comentarios, P.Stock, O.Descripciones, O.PrecioVenta * P.Stock AS [Total de la venta] " +
+                            "FROM Venta AS V " +
+                            "INNER JOIN ProductoVendido AS P ON P.IdVenta = V.Id " +
                             "INNER JOIN Producto AS O ON P.IdProducto = O.Id";
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -55,12 +55,12 @@ namespace Pre_Entrega_1.Handler
                             "FROM ProductoVendido AS P " +
                             "INNER JOIN Producto ON Producto.Id = P.IdProducto " +
                             "GROUP BY P.IdProducto, Descripciones";
-            using(SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
                 using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                 {
                     sqlConnection.Open();
-                    using(SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
                     {
                         if (dataReader.HasRows)
                         {
@@ -84,9 +84,9 @@ namespace Pre_Entrega_1.Handler
             string queryDeleteVenta = "DELETE FROM Venta WHERE Id = @id";
             string queryDeletePV = "DELETE FROM ProductoVendido WHERE IdVenta = @id";
 
-            using(SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             {
-                SqlParameter idParameter = new SqlParameter("id", System.Data.SqlDbType.Int) {Value = id};
+                SqlParameter idParameter = new SqlParameter("id", System.Data.SqlDbType.Int) { Value = id };
 
                 sqlConnection.Open();
 
@@ -110,5 +110,5 @@ namespace Pre_Entrega_1.Handler
             }
         }
     }
-    
+
 }
