@@ -1,4 +1,4 @@
-﻿namespace Entrega_final.Handler.DOTS
+﻿namespace Entrega_final.Controllers.DOTS
 {
     public class GetProductosVendidos
     {

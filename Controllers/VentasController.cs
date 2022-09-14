@@ -1,6 +1,6 @@
-﻿using Entrega_final.Handler.DOTS;
+﻿using Entrega_final.Controllers.DOTS;
+using Entrega_final.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Pre_Entrega_1.Handler;
 
 namespace Entrega_final.Controllers
 {
